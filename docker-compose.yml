@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  orquestrador-central:
+    build: .
+    container_name: orquestrador-central
+    environment:
+      # Removido ASPNETCORE_ENVIRONMENT=Development - usa apenas appsettings.json
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=GraficaLtda;Username=postgres;Password=postgres123
+      - RabbitMQ__HostName=rabbitmq
+      - RabbitMQ__Port=5672
+      - RabbitMQ__UserName=admin
+      - RabbitMQ__Password=admin123
+      - RabbitMQ__QueueName=lote.processamento
+      - RabbitMQ__ExchangeName=graficaltda.exchange
+      - RabbitMQ__DeadLetterQueue=lote.processamento.dlq
+      - AWS__AccessKey=your-access-key
+      - AWS__SecretKey=your-secret-key
+      - AWS__Region=us-east-1
+      - AWS__Lambda__TimeoutSeconds=300
+      - AWS__Lambda__MaxRetries=3
+      # Múltiplas Lambdas - Sistema de Roteamento
+      - AWS__Lambda__Functions__ClienteMalaDireta=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteMalaDireta
+      - AWS__Lambda__Functions__ClienteEtiquetas=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteEtiquetas
+      - AWS__Lambda__Functions__ClienteCartoes=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteCartoes
+      - AWS__Lambda__Functions__Default=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: unless-stopped
+    networks:
+      - grafica-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: GraficaLtda
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - grafica-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-server
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - grafica-network
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+networks:
+  grafica-network:
+    driver: bridge
