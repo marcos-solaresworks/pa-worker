@@ -1,0 +1,324 @@
+[2025-11-16 13:47:55.057 INF] 🚀 Iniciando OrquestradorCentral Worker Service
+[2025-11-16 13:47:55.990 INF] Migrações do banco de dados aplicadas com sucesso
+[2025-11-16 13:47:56.009 INF] OrquestradorCentral Worker iniciado em: "2025-11-16T13:47:56.0054117-03:00"
+[2025-11-16 13:47:56.091 INF] ✅ Conectado ao RabbitMQ - Exchange: graficaltda.exchange
+[2025-11-16 13:47:56.091 INF]    📥 Queue de entrada: lote.processamento
+[2025-11-16 13:47:56.091 INF]    📤 Queue de retorno: lote.processamento.retorno
+[2025-11-16 13:47:56.094 INF] Consumer iniciado na queue: lote.processamento com tag: amq.ctag-fc_-sMTkcb7ilJs2QQ7q1w
+[2025-11-16 13:47:56.094 INF] RabbitMQ Consumer iniciado com sucesso
+[2025-11-16 13:48:32.700 INF] 📨 [STEP 1] Mensagem recebida do RabbitMQ - DeliveryTag: 1, Tamanho: 158 bytes
+[2025-11-16 13:48:32.703 DBG] Conteúdo da mensagem: {"loteId":6,"clienteId":1,"nomeArquivo":"clientes_impressao.csv","caminhoS3":"lotes/1317c8e8-41fb-4454-a41b-b162fc8bc8cd/clientes_impressao.csv","perfilId":2}
+[2025-11-16 13:48:32.736 INF] ✅ Mensagem deserializada - LoteId: 6, CaminhoS3: lotes/1317c8e8-41fb-4454-a41b-b162fc8bc8cd/clientes_impressao.csv
+[2025-11-16 13:48:32.737 DBG]    S3Bucket extraído: lotes, S3Key extraído: 1317c8e8-41fb-4454-a41b-b162fc8bc8cd/clientes_impressao.csv
+[2025-11-16 13:48:32.737 INF] ⚙️ [STEP 2] Iniciando processamento do lote 6...
+[2025-11-16 13:48:32.812 INF] Lambda Router inicializado com 4 funções mapeadas
+[2025-11-16 13:48:32.812 DBG] Mapeamento: ClienteCartoes -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteCartoes
+[2025-11-16 13:48:32.812 DBG] Mapeamento: ClienteEtiquetas -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteEtiquetas
+[2025-11-16 13:48:32.812 DBG] Mapeamento: ClienteMalaDireta -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteMalaDireta
+[2025-11-16 13:48:32.812 DBG] Mapeamento: Default -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
+[2025-11-16 13:48:32.815 INF] 🔍 Buscando dados do lote 6 no banco de dados...
+[2025-11-16 13:48:33.025 ERR] ❌ Lote 6 não encontrado no banco de dados
+[2025-11-16 13:48:33.026 INF] ✅ [STEP 5] Mensagem processada e confirmada no RabbitMQ - Lote: 6
+[2025-11-16 13:52:04.009 INF] 🚀 Iniciando OrquestradorCentral Worker Service
+[2025-11-16 13:52:04.916 INF] Migrações do banco de dados aplicadas com sucesso
+[2025-11-16 13:52:04.933 INF] OrquestradorCentral Worker iniciado em: "2025-11-16T13:52:04.9302379-03:00"
+[2025-11-16 13:52:05.017 INF] ✅ Conectado ao RabbitMQ - Exchange: graficaltda.exchange
+[2025-11-16 13:52:05.018 INF]    📥 Queue de entrada: lote.processamento
+[2025-11-16 13:52:05.018 INF]    📤 Queue de retorno: lote.processamento.retorno
+[2025-11-16 13:52:05.020 INF] Consumer iniciado na queue: lote.processamento com tag: amq.ctag-tn4dyEVZsyhLgbX7DQgxhA
+[2025-11-16 13:52:05.020 INF] RabbitMQ Consumer iniciado com sucesso
+[2025-11-16 13:52:15.977 INF] 📨 [STEP 1] Mensagem recebida do RabbitMQ - DeliveryTag: 1, Tamanho: 158 bytes
+[2025-11-16 13:52:15.978 DBG] Conteúdo da mensagem: {"loteId":7,"clienteId":1,"nomeArquivo":"clientes_impressao.csv","caminhoS3":"lotes/6162cdf2-b8e0-44c7-9260-4319f05b26eb/clientes_impressao.csv","perfilId":2}
+[2025-11-16 13:52:16.008 INF] ✅ Mensagem deserializada - LoteId: 7, CaminhoS3: lotes/6162cdf2-b8e0-44c7-9260-4319f05b26eb/clientes_impressao.csv
+[2025-11-16 13:52:16.008 DBG]    S3Bucket extraído: lotes, S3Key extraído: 6162cdf2-b8e0-44c7-9260-4319f05b26eb/clientes_impressao.csv
+[2025-11-16 13:52:16.009 INF] ⚙️ [STEP 2] Iniciando processamento do lote 7...
+[2025-11-16 13:52:16.085 INF] Lambda Router inicializado com 4 funções mapeadas
+[2025-11-16 13:52:16.085 DBG] Mapeamento: ClienteCartoes -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteCartoes
+[2025-11-16 13:52:16.085 DBG] Mapeamento: ClienteEtiquetas -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteEtiquetas
+[2025-11-16 13:52:16.085 DBG] Mapeamento: ClienteMalaDireta -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteMalaDireta
+[2025-11-16 13:52:16.085 DBG] Mapeamento: Default -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
+[2025-11-16 13:52:16.088 INF] 🔍 Buscando dados do lote 7 no banco de dados...
+[2025-11-16 13:52:16.342 INF] ✅ Lote 7 encontrado - Status: Recebido, Perfil: 2
+[2025-11-16 13:52:16.342 INF] 🔍 Buscando perfil de processamento 2...
+[2025-11-16 13:52:16.359 ERR] Failed executing DbCommand (6ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.cliente_id, p.data_criacao, p.delimitador, p.descricao, p.lambda_function, p.nome, p.template_pcl, p.tipo_arquivo, p.tipo_processamento
+FROM perfis_processamento AS p
+WHERE p.id = @__id_0
+LIMIT 1
+[2025-11-16 13:52:16.386 ERR] An exception occurred while iterating over the results of a query for context type 'OrquestradorCentral.Infrastructure.Data.OrquestradorDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column p.lambda_function does not exist
+
+POSITION: 72
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column p.lambda_function does not exist
+    Position: 72
+    File: parse_relation.c
+    Line: 3822
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column p.lambda_function does not exist
+
+POSITION: 72
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column p.lambda_function does not exist
+    Position: 72
+    File: parse_relation.c
+    Line: 3822
+    Routine: errorMissingColumn
+[2025-11-16 13:52:16.430 ERR] 💥 Erro crítico ao processar lote 7
+Npgsql.PostgresException (0x80004005): 42703: column p.lambda_function does not exist
+
+POSITION: 72
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at OrquestradorCentral.Infrastructure.Repositories.PerfilProcessamentoRepository.GetByIdAsync(Int32 id) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Infrastructure/Repositories/Repositories.cs:line 40
+   at OrquestradorCentral.Application.Services.ProcessamentoService.ProcessarLoteAsync(LoteProcessamentoMessage message) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Application/Services/ProcessamentoService.cs:line 54
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column p.lambda_function does not exist
+    Position: 72
+    File: parse_relation.c
+    Line: 3822
+    Routine: errorMissingColumn
+[2025-11-16 13:52:16.670 INF] 📝 Preparando mensagem de erro crítico para publicação...
+[2025-11-16 13:52:16.671 INF] 📮 [STEP 5] Publicando mensagem de erro crítico na fila 'lote.processamento.retorno'...
+[2025-11-16 13:52:16.672 DBG] 🔄 Iniciando publicação na fila 'lote.processamento.retorno'...
+[2025-11-16 13:52:16.672 INF] 📡 Estabelecendo conexão com RabbitMQ para publicação...
+[2025-11-16 13:52:16.706 ERR] ❌ Erro ao publicar mensagem na fila 'lote.processamento.retorno'
+RabbitMQ.Client.Exceptions.OperationInterruptedException: The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=406, text='PRECONDITION_FAILED - inequivalent arg 'type' for exchange 'graficaltda.exchange' in vhost '/': received 'direct' but current is 'topic'', classId=40, methodId=10
+   at RabbitMQ.Client.Impl.SimpleBlockingRpcContinuation.GetReply(TimeSpan timeout)
+   at RabbitMQ.Client.Impl.ModelBase.ModelRpc(MethodBase method, ContentHeaderBase header, Byte[] body)
+   at RabbitMQ.Client.Framing.Impl.Model._Private_ExchangeDeclare(String exchange, String type, Boolean passive, Boolean durable, Boolean autoDelete, Boolean internal, Boolean nowait, IDictionary`2 arguments)
+   at RabbitMQ.Client.Impl.ModelBase.ExchangeDeclare(String exchange, String type, Boolean durable, Boolean autoDelete, IDictionary`2 arguments)
+   at RabbitMQ.Client.Impl.AutorecoveringModel.ExchangeDeclare(String exchange, String type, Boolean durable, Boolean autoDelete, IDictionary`2 arguments)
+   at RabbitMQ.Client.IModelExensions.ExchangeDeclare(IModel model, String exchange, String type, Boolean durable, Boolean autoDelete, IDictionary`2 arguments)
+   at OrquestradorCentral.Infrastructure.Messaging.RabbitMQPublisher.EnsureConnection() in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Infrastructure/Messaging/RabbitMQPublisher.cs:line 56
+   at OrquestradorCentral.Infrastructure.Messaging.RabbitMQPublisher.PublishAsync[T](T message, String queueName) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Infrastructure/Messaging/RabbitMQPublisher.cs:line 72
+[2025-11-16 13:52:16.719 ERR] ❌ Erro ao publicar mensagem de erro crítico: The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=406, text='PRECONDITION_FAILED - inequivalent arg 'type' for exchange 'graficaltda.exchange' in vhost '/': received 'direct' but current is 'topic'', classId=40, methodId=10
+RabbitMQ.Client.Exceptions.OperationInterruptedException: The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=406, text='PRECONDITION_FAILED - inequivalent arg 'type' for exchange 'graficaltda.exchange' in vhost '/': received 'direct' but current is 'topic'', classId=40, methodId=10
+   at RabbitMQ.Client.Impl.SimpleBlockingRpcContinuation.GetReply(TimeSpan timeout)
+   at RabbitMQ.Client.Impl.ModelBase.ModelRpc(MethodBase method, ContentHeaderBase header, Byte[] body)
+   at RabbitMQ.Client.Framing.Impl.Model._Private_ExchangeDeclare(String exchange, String type, Boolean passive, Boolean durable, Boolean autoDelete, Boolean internal, Boolean nowait, IDictionary`2 arguments)
+   at RabbitMQ.Client.Impl.ModelBase.ExchangeDeclare(String exchange, String type, Boolean durable, Boolean autoDelete, IDictionary`2 arguments)
+   at RabbitMQ.Client.Impl.AutorecoveringModel.ExchangeDeclare(String exchange, String type, Boolean durable, Boolean autoDelete, IDictionary`2 arguments)
+   at RabbitMQ.Client.IModelExensions.ExchangeDeclare(IModel model, String exchange, String type, Boolean durable, Boolean autoDelete, IDictionary`2 arguments)
+   at OrquestradorCentral.Infrastructure.Messaging.RabbitMQPublisher.EnsureConnection() in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Infrastructure/Messaging/RabbitMQPublisher.cs:line 56
+   at OrquestradorCentral.Infrastructure.Messaging.RabbitMQPublisher.PublishAsync[T](T message, String queueName) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Infrastructure/Messaging/RabbitMQPublisher.cs:line 72
+   at OrquestradorCentral.Application.Services.ProcessamentoService.ProcessarLoteAsync(LoteProcessamentoMessage message) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Application/Services/ProcessamentoService.cs:line 184
+[2025-11-16 13:52:16.721 INF] ✅ [STEP 5] Mensagem processada e confirmada no RabbitMQ - Lote: 7
+[2025-11-16 13:53:57.087 INF] 🚀 Iniciando OrquestradorCentral Worker Service
+[2025-11-16 13:53:57.979 INF] Migrações do banco de dados aplicadas com sucesso
+[2025-11-16 13:53:57.999 INF] OrquestradorCentral Worker iniciado em: "2025-11-16T13:53:57.9955491-03:00"
+[2025-11-16 13:53:58.101 INF] ✅ Conectado ao RabbitMQ - Exchange: graficaltda.exchange
+[2025-11-16 13:53:58.101 INF]    📥 Queue de entrada: lote.processamento
+[2025-11-16 13:53:58.101 INF]    📤 Queue de retorno: lote.processamento.retorno
+[2025-11-16 13:53:58.105 INF] Consumer iniciado na queue: lote.processamento com tag: amq.ctag--hoI27WRKV35e4ruKOZbUw
+[2025-11-16 13:53:58.105 INF] RabbitMQ Consumer iniciado com sucesso
+[2025-11-16 13:54:07.155 INF] 📨 [STEP 1] Mensagem recebida do RabbitMQ - DeliveryTag: 1, Tamanho: 158 bytes
+[2025-11-16 13:54:07.156 DBG] Conteúdo da mensagem: {"loteId":8,"clienteId":1,"nomeArquivo":"clientes_impressao.csv","caminhoS3":"lotes/ae4ce897-f918-448c-a4c5-bb50f50abcd4/clientes_impressao.csv","perfilId":2}
+[2025-11-16 13:54:07.192 INF] ✅ Mensagem deserializada - LoteId: 8, CaminhoS3: lotes/ae4ce897-f918-448c-a4c5-bb50f50abcd4/clientes_impressao.csv
+[2025-11-16 13:54:07.193 DBG]    S3Bucket extraído: lotes, S3Key extraído: ae4ce897-f918-448c-a4c5-bb50f50abcd4/clientes_impressao.csv
+[2025-11-16 13:54:07.193 INF] ⚙️ [STEP 2] Iniciando processamento do lote 8...
+[2025-11-16 13:54:07.264 INF] Lambda Router inicializado com 4 funções mapeadas
+[2025-11-16 13:54:07.264 DBG] Mapeamento: ClienteCartoes -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteCartoes
+[2025-11-16 13:54:07.264 DBG] Mapeamento: ClienteEtiquetas -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteEtiquetas
+[2025-11-16 13:54:07.264 DBG] Mapeamento: ClienteMalaDireta -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteMalaDireta
+[2025-11-16 13:54:07.264 DBG] Mapeamento: Default -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
+[2025-11-16 13:54:07.267 INF] 🔍 Buscando dados do lote 8 no banco de dados...
+[2025-11-16 13:54:07.496 INF] ✅ Lote 8 encontrado - Status: Recebido, Perfil: 2
+[2025-11-16 13:54:07.496 INF] 🔍 Buscando perfil de processamento 2...
+[2025-11-16 13:54:07.511 ERR] Failed executing DbCommand (4ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT p.id, p.cliente_id, p.data_criacao, p.delimitador, p.descricao, p.lambda_function, p.nome, p.template_pcl, p.tipo_arquivo, p.tipo_processamento
+FROM perfis_processamento AS p
+WHERE p.id = @__id_0
+LIMIT 1
+[2025-11-16 13:54:07.540 ERR] An exception occurred while iterating over the results of a query for context type 'OrquestradorCentral.Infrastructure.Data.OrquestradorDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column p.lambda_function does not exist
+
+POSITION: 72
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column p.lambda_function does not exist
+    Position: 72
+    File: parse_relation.c
+    Line: 3822
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column p.lambda_function does not exist
+
+POSITION: 72
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column p.lambda_function does not exist
+    Position: 72
+    File: parse_relation.c
+    Line: 3822
+    Routine: errorMissingColumn
+[2025-11-16 13:54:07.589 ERR] 💥 Erro crítico ao processar lote 8
+Npgsql.PostgresException (0x80004005): 42703: column p.lambda_function does not exist
+
+POSITION: 72
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at OrquestradorCentral.Infrastructure.Repositories.PerfilProcessamentoRepository.GetByIdAsync(Int32 id) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Infrastructure/Repositories/Repositories.cs:line 40
+   at OrquestradorCentral.Application.Services.ProcessamentoService.ProcessarLoteAsync(LoteProcessamentoMessage message) in /home/marcos/Documentos/Pos Graduação/XPe/Projeto Aplicado/Sprints/Sprint 2/HG10/OrquestradorCentral/Application/Services/ProcessamentoService.cs:line 54
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column p.lambda_function does not exist
+    Position: 72
+    File: parse_relation.c
+    Line: 3822
+    Routine: errorMissingColumn
+[2025-11-16 13:54:07.868 INF] 📝 Preparando mensagem de erro crítico para publicação...
+[2025-11-16 13:54:07.868 INF] 📮 [STEP 5] Publicando mensagem de erro crítico na fila 'lote.processamento.retorno'...
+[2025-11-16 13:54:07.869 DBG] 🔄 Iniciando publicação na fila 'lote.processamento.retorno'...
+[2025-11-16 13:54:07.869 INF] 📡 Estabelecendo conexão com RabbitMQ para publicação...
+[2025-11-16 13:54:07.912 INF] ✅ Conexão estabelecida com RabbitMQ - Exchange: graficaltda.exchange
+[2025-11-16 13:54:07.916 DBG] ✅ Conexão RabbitMQ verificada
+[2025-11-16 13:54:07.917 DBG] 📍 Exchange: graficaltda.exchange, Queue: lote.processamento.retorno
+[2025-11-16 13:54:07.917 DBG] 📦 Declarando queue 'lote.processamento.retorno'...
+[2025-11-16 13:54:07.920 DBG] 🔗 Fazendo bind da queue 'lote.processamento.retorno' ao exchange 'graficaltda.exchange'...
+[2025-11-16 13:54:07.922 DBG] 📝 Serializando mensagem...
+[2025-11-16 13:54:07.949 DBG] ✅ Mensagem serializada: 270 bytes
+[2025-11-16 13:54:07.949 DBG] 📤 Publicando mensagem no exchange 'graficaltda.exchange' com routing key 'lote.processamento.retorno'...
+[2025-11-16 13:54:07.951 INF] ✅ Mensagem publicada na fila 'lote.processamento.retorno' - Tamanho: 270 bytes
+[2025-11-16 13:54:07.951 DBG] Conteúdo da mensagem publicada: {"loteId":8,"sucesso":false,"status":"Erro","registrosProcessados":0,"arquivoSaida":null,"tempoProcessamentoSegundos":0,"mensagemErro":"Erro cr\u00EDtico: 42703: column p.lambda_function does not exist\n\nPOSITION: 72","dataProcessamento":"2025-11-16T16:54:07.8686965Z"}
+[2025-11-16 13:54:07.951 INF] ✅ Mensagem de erro crítico publicada com sucesso!
+[2025-11-16 13:54:07.952 INF] ✅ [STEP 5] Mensagem processada e confirmada no RabbitMQ - Lote: 8
+[2025-11-16 13:58:41.806 INF] 🚀 Iniciando OrquestradorCentral Worker Service
+[2025-11-16 13:58:42.687 INF] Migrações do banco de dados aplicadas com sucesso
+[2025-11-16 13:58:42.705 INF] OrquestradorCentral Worker iniciado em: "2025-11-16T13:58:42.7014678-03:00"
+[2025-11-16 13:58:42.782 INF] ✅ Conectado ao RabbitMQ - Exchange: graficaltda.exchange
+[2025-11-16 13:58:42.782 INF]    📥 Queue de entrada: lote.processamento
+[2025-11-16 13:58:42.782 INF]    📤 Queue de retorno: lote.processamento.retorno
+[2025-11-16 13:58:42.785 INF] Consumer iniciado na queue: lote.processamento com tag: amq.ctag-19B43BVhLCvjdbcP2SPz1g
+[2025-11-16 13:58:42.785 INF] RabbitMQ Consumer iniciado com sucesso
+[2025-11-16 13:58:42.789 INF] 📨 [STEP 1] Mensagem recebida do RabbitMQ - DeliveryTag: 1, Tamanho: 158 bytes
+[2025-11-16 13:58:42.790 DBG] Conteúdo da mensagem: {"loteId":9,"clienteId":1,"nomeArquivo":"clientes_impressao.csv","caminhoS3":"lotes/c44d6165-70cd-4e3e-979c-1b3e225a909c/clientes_impressao.csv","perfilId":2}
+[2025-11-16 13:58:42.817 INF] ✅ Mensagem deserializada - LoteId: 9, CaminhoS3: lotes/c44d6165-70cd-4e3e-979c-1b3e225a909c/clientes_impressao.csv
+[2025-11-16 13:58:42.818 DBG]    S3Bucket extraído: lotes, S3Key extraído: c44d6165-70cd-4e3e-979c-1b3e225a909c/clientes_impressao.csv
+[2025-11-16 13:58:42.818 INF] ⚙️ [STEP 2] Iniciando processamento do lote 9...
+[2025-11-16 13:58:42.886 INF] Lambda Router inicializado com 4 funções mapeadas
+[2025-11-16 13:58:42.886 DBG] Mapeamento: ClienteCartoes -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteCartoes
+[2025-11-16 13:58:42.886 DBG] Mapeamento: ClienteEtiquetas -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteEtiquetas
+[2025-11-16 13:58:42.886 DBG] Mapeamento: ClienteMalaDireta -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteMalaDireta
+[2025-11-16 13:58:42.886 DBG] Mapeamento: Default -> arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
+[2025-11-16 13:58:42.888 INF] 🔍 Buscando dados do lote 9 no banco de dados...
+[2025-11-16 13:58:43.136 INF] ✅ Lote 9 encontrado - Status: Recebido, Perfil: 2
+[2025-11-16 13:58:43.136 INF] 🔍 Buscando perfil de processamento 2...
+[2025-11-16 13:58:43.148 INF] ✅ Perfil encontrado - Nome: Rápido - Impressão Digital, Tipo: Default, Lambda: N/A
+[2025-11-16 13:58:43.148 INF] 📝 Atualizando status do lote para 'Processando'...
+[2025-11-16 13:58:43.380 INF] 🚀 [STEP 3] Chamando Lambda Router para lote 9...
+[2025-11-16 13:58:43.382 INF] 🎯 Determinando tipo de processamento para o perfil 'Rápido - Impressão Digital'...
+[2025-11-16 13:58:43.384 WRN] Não foi possível determinar tipo de processamento para perfil 2, usando padrão
+[2025-11-16 13:58:43.384 INF] 📍 Tipo de processamento identificado: Default
+[2025-11-16 13:58:43.385 INF] 🔎 Buscando ARN da Lambda para tipo 'Default'...
+[2025-11-16 13:58:43.387 INF] ✅ Lambda selecionada: arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
+[2025-11-16 13:58:43.387 INF] 🎯 Roteando lote 9 para Lambda Default
+[2025-11-16 13:58:43.387 DBG] 📦 Preparando payload para a Lambda...
+[2025-11-16 13:58:43.388 DBG] ⚙️ Enriquecendo payload com configurações específicas do tipo Default...
+[2025-11-16 13:58:43.388 DBG] Payload enriquecido para tipo Default com 2 configurações
+[2025-11-16 13:58:43.388 INF] ✅ Payload preparado com 2 configurações
+[2025-11-16 13:58:43.388 INF] 🚀 Invocando Lambda Invoker...
+[2025-11-16 13:58:43.391 INF] 🔄 [SIMULAÇÃO] Invocando Lambda Default para lote 9 com arquivo c44d6165-70cd-4e3e-979c-1b3e225a909c/clientes_impressao.csv (ARN: arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico)
+[2025-11-16 13:58:45.395 INF] ✅ [SIMULAÇÃO] Lambda processou lote 9 com sucesso. Registros: 56, Tempo: 2000.8643ms, Output: s3://lotes/processados/9/output_20251116165845.pcl
+[2025-11-16 13:58:45.404 INF] ✅ [STEP 4] Processamento concluído com sucesso!
+[2025-11-16 13:58:45.404 INF]    📊 Registros processados: 56
+[2025-11-16 13:58:45.404 INF]    ⏱️ Tempo de processamento: 2.00s
+[2025-11-16 13:58:45.407 INF]    📁 Arquivo de saída: s3://lotes/processados/9/output_20251116165845.pcl
+[2025-11-16 13:58:45.464 INF] 💾 Status atualizado para 'Concluído' no banco de dados
+[2025-11-16 13:58:45.464 INF] 📝 Preparando mensagem de retorno para publicação...
+[2025-11-16 13:58:45.466 INF] 📮 [STEP 5] Publicando mensagem de retorno na fila 'lote.processamento.retorno'...
+[2025-11-16 13:58:45.466 DBG] Mensagem: LoteId=9, Status=Concluído, Registros=56
+[2025-11-16 13:58:45.469 DBG] 🔄 Iniciando publicação na fila 'lote.processamento.retorno'...
+[2025-11-16 13:58:45.471 INF] 📡 Estabelecendo conexão com RabbitMQ para publicação...
+[2025-11-16 13:58:45.484 INF] ✅ Conexão estabelecida com RabbitMQ - Exchange: graficaltda.exchange
+[2025-11-16 13:58:45.484 DBG] ✅ Conexão RabbitMQ verificada
+[2025-11-16 13:58:45.484 DBG] 📍 Exchange: graficaltda.exchange, Queue: lote.processamento.retorno
+[2025-11-16 13:58:45.484 DBG] 📦 Declarando queue 'lote.processamento.retorno'...
+[2025-11-16 13:58:45.487 DBG] 🔗 Fazendo bind da queue 'lote.processamento.retorno' ao exchange 'graficaltda.exchange'...
+[2025-11-16 13:58:45.488 DBG] 📝 Serializando mensagem...
+[2025-11-16 13:58:45.502 DBG] ✅ Mensagem serializada: 257 bytes
+[2025-11-16 13:58:45.502 DBG] 📤 Publicando mensagem no exchange 'graficaltda.exchange' com routing key 'lote.processamento.retorno'...
+[2025-11-16 13:58:45.504 INF] ✅ Mensagem publicada na fila 'lote.processamento.retorno' - Tamanho: 257 bytes
+[2025-11-16 13:58:45.504 DBG] Conteúdo da mensagem publicada: {"loteId":9,"sucesso":true,"status":"Conclu\u00EDdo","registrosProcessados":56,"arquivoSaida":"s3://lotes/processados/9/output_20251116165845.pcl","tempoProcessamentoSegundos":2.0008643,"mensagemErro":null,"dataProcessamento":"2025-11-16T16:58:45.4658337Z"}
+[2025-11-16 13:58:45.504 INF] ✅ Mensagem de retorno publicada com sucesso!
+[2025-11-16 13:58:45.505 INF] ✅ [STEP 5] Mensagem processada e confirmada no RabbitMQ - Lote: 9
