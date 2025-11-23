@@ -65,7 +65,7 @@ public class LambdaInvoker : ILambdaInvoker
             
             if (invokeResponse.StatusCode != 200)
             {
-                throw new Amazon.Lambda.Model.AmazonLambdaException($"Lambda invocation failed with status code: {invokeResponse.StatusCode}");
+                throw new InvalidOperationException($"Lambda invocation failed with status code: {invokeResponse.StatusCode}");
             }
 
             _logger.LogInformation("✅ Lambda invocada com sucesso - Status: {Status}", invokeResponse.StatusCode);

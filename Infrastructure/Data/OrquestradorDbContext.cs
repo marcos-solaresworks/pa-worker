@@ -12,6 +12,8 @@ public class OrquestradorDbContext : DbContext
     public DbSet<LoteProcessamento> LotesProcessamento { get; set; }
     public DbSet<ProcessamentoLog> ProcessamentoLogs { get; set; }
     public DbSet<PerfilProcessamento> PerfisProcessamento { get; set; }
+    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<ArquivoPcl> ArquivosPcl { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,6 +60,34 @@ public class OrquestradorDbContext : DbContext
             entity.Property(e => e.TipoProcessamento).HasColumnName("tipo_processamento");
             entity.Property(e => e.LambdaFunction).HasColumnName("lambda_function");
             entity.Property(e => e.DataCriacao).HasColumnName("data_criacao");
+        });
+
+        modelBuilder.Entity<Cliente>(entity =>
+        {
+            entity.ToTable("clientes");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            entity.Property(e => e.Nome).HasColumnName("nome");
+            entity.Property(e => e.Email).HasColumnName("email");
+            entity.Property(e => e.Telefone).HasColumnName("telefone");
+            entity.Property(e => e.DataCriacao).HasColumnName("data_criacao");
+            entity.Property(e => e.DataCadastro).HasColumnName("data_cadastro");
+        });
+
+        modelBuilder.Entity<ArquivoPcl>(entity =>
+        {
+            entity.ToTable("arquivos_pcl");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            entity.Property(e => e.LoteId).HasColumnName("lote_id");
+            entity.Property(e => e.NomeArquivo).HasColumnName("nome_arquivo");
+            entity.Property(e => e.CaminhoS3).HasColumnName("caminho_s3");
+            entity.Property(e => e.CaminhoArquivo).HasColumnName("caminho_arquivo");
+            entity.Property(e => e.TamanhoBytes).HasColumnName("tamanho_bytes");
+            entity.Property(e => e.NumeroPaginas).HasColumnName("numero_paginas");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.DataCriacao).HasColumnName("data_criacao");
+            entity.Property(e => e.DataUpload).HasColumnName("data_upload");
         });
     }
 }

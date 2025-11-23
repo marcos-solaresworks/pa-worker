@@ -86,3 +86,52 @@ public class PerfilProcessamento
     
     public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
 }
+
+public class Cliente
+{
+    public int Id { get; set; }
+    
+    [Required]
+    [MaxLength(200)]
+    public string Nome { get; set; } = string.Empty;
+    
+    [MaxLength(100)]
+    public string? Email { get; set; }
+    
+    [MaxLength(20)]
+    public string? Telefone { get; set; }
+    
+    public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+    
+    public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
+}
+
+public class ArquivoPcl
+{
+    public int Id { get; set; }
+    
+    [Required]
+    public int LoteId { get; set; }
+    
+    [Required]
+    [MaxLength(200)]
+    public string NomeArquivo { get; set; } = string.Empty;
+    
+    [Required]
+    [MaxLength(300)]
+    public string CaminhoS3 { get; set; } = string.Empty;
+    
+    [MaxLength(300)]
+    public string CaminhoArquivo { get; set; } = string.Empty;
+    
+    public long TamanhoBytes { get; set; }
+    
+    public int NumeroPaginas { get; set; }
+    
+    [MaxLength(50)]
+    public string? Status { get; set; }
+    
+    public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+    
+    public DateTime DataUpload { get; set; } = DateTime.UtcNow;
+}

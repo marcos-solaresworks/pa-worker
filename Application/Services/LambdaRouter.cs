@@ -4,6 +4,10 @@ using OrquestradorCentral.Application.Interfaces;
 using OrquestradorCentral.Application.Models;
 using OrquestradorCentral.Domain.Entities;
 using System.IO;
+using ClienteModel = OrquestradorCentral.Application.Models.Cliente;
+using ArquivoPclModel = OrquestradorCentral.Application.Models.ArquivoPcl;
+using ClienteEntity = OrquestradorCentral.Domain.Entities.Cliente;
+using ArquivoPclEntity = OrquestradorCentral.Domain.Entities.ArquivoPcl;
 
 namespace OrquestradorCentral.Application.Services;
 
@@ -210,9 +214,9 @@ public class LambdaRouter : ILambdaRouter
         {
             _logger.LogWarning("⚠️ Nenhum arquivo PCL encontrado para o LoteId: {LoteId}. Usando caminho da mensagem.", message.LoteId);
             // Se não houver arquivos, usar o caminho da mensagem
-            arquivosEntity = new List<Domain.Entities.ArquivoPcl>
+            arquivosEntity = new List<ArquivoPclEntity>
             {
-                new Domain.Entities.ArquivoPcl
+                new ArquivoPclEntity
                 {
                     LoteId = message.LoteId,
                     NomeArquivo = message.NomeArquivo,
@@ -225,7 +229,7 @@ public class LambdaRouter : ILambdaRouter
         _logger.LogInformation("✅ {Count} arquivo(s) PCL encontrado(s) para processamento", arquivosEntity.Count);
 
         // 3. Converter entidades do Domain para modelos do Application
-        var clienteModel = new Cliente
+        var clienteModel = new ClienteModel
         {
             Id = clienteEntity.Id,
             Nome = clienteEntity.Nome,
@@ -234,7 +238,7 @@ public class LambdaRouter : ILambdaRouter
             DataCadastro = clienteEntity.DataCadastro
         };
 
-        var arquivosModel = arquivosEntity.Select(a => new ArquivoPcl
+        var arquivosModel = arquivosEntity.Select(a => new ArquivoPclModel
         {
             Id = a.Id,
             LoteId = a.LoteId,
