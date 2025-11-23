@@ -79,7 +79,7 @@ public class LambdaInvoker : ILambdaInvoker
 
             var lambdaResponse = JsonSerializer.Deserialize<LambdaProcessamentoResponse>(responseJson, new JsonSerializerOptions
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNameCaseInsensitive = true
             });
 
             if (lambdaResponse == null)
