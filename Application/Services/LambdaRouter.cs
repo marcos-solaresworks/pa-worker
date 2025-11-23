@@ -208,25 +208,25 @@ public class LambdaRouter : ILambdaRouter
 
         _logger.LogInformation("✅ Cliente encontrado: {Nome} (ID: {Id})", clienteEntity.Nome, clienteEntity.Id);
 
-        // 2. Buscar arquivos PCL reais do banco de dados
-        var arquivosEntity = await _arquivoPclRepository.GetByLoteIdAsync(message.LoteId);
-        if (arquivosEntity == null || !arquivosEntity.Any())
+        // 2. Criar lista de arquivos PCL a partir dos dados da mensagem
+        // Nota: A tabela arquivos_pcl não existe no banco, então usamos os dados da mensagem
+        _logger.LogInformation("📄 Usando informações do arquivo da mensagem recebida");
+        var arquivosEntity = new List<ArquivoPclEntity>
         {
-            _logger.LogWarning("⚠️ Nenhum arquivo PCL encontrado para o LoteId: {LoteId}. Usando caminho da mensagem.", message.LoteId);
-            // Se não houver arquivos, usar o caminho da mensagem
-            arquivosEntity = new List<ArquivoPclEntity>
+            new ArquivoPclEntity
             {
-                new ArquivoPclEntity
-                {
-                    LoteId = message.LoteId,
-                    NomeArquivo = message.NomeArquivo,
-                    CaminhoArquivo = message.CaminhoS3,
-                    DataUpload = DateTime.UtcNow
-                }
-            };
-        }
+                LoteId = message.LoteId,
+                NomeArquivo = message.NomeArquivo,
+                CaminhoArquivo = message.CaminhoS3,
+                CaminhoS3 = message.CaminhoS3,
+                TamanhoBytes = 0,
+                NumeroPaginas = 0,
+                DataUpload = DateTime.UtcNow,
+                DataCriacao = DateTime.UtcNow
+            }
+        };
 
-        _logger.LogInformation("✅ {Count} arquivo(s) PCL encontrado(s) para processamento", arquivosEntity.Count);
+        _logger.LogInformation("✅ {Count} arquivo(s) PCL preparado(s) para processamento", arquivosEntity.Count);
 
         // 3. Converter entidades do Domain para modelos do Application
         var clienteModel = new ClienteModel
