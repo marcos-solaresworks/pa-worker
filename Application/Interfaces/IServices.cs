@@ -41,6 +41,16 @@ public interface IProcessamentoLogRepository
     Task AddAsync(ProcessamentoLog log);
 }
 
+public interface IClienteRepository
+{
+    Task<Domain.Entities.Cliente?> GetByIdAsync(int id);
+}
+
+public interface IArquivoPclRepository
+{
+    Task<List<Domain.Entities.ArquivoPcl>> GetByLoteIdAsync(int loteId);
+}
+
 public interface IMessagePublisher
 {
     Task PublishAsync<T>(T message, string queueName) where T : class;

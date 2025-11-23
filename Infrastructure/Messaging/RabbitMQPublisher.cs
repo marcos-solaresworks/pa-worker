@@ -36,13 +36,26 @@ public class RabbitMQPublisher : IMessagePublisher, IDisposable
 
             _logger.LogInformation("📡 Estabelecendo conexão com RabbitMQ para publicação...");
 
+            var hostName = _configuration["RabbitMQ:HostName"] ?? "localhost";
+            var port = _configuration.GetValue<int>("RabbitMQ:Port", 5672);
+            var userName = _configuration["RabbitMQ:UserName"] ?? "guest";
+            var password = _configuration["RabbitMQ:Password"] ?? "guest";
+            var virtualHost = _configuration["RabbitMQ:VirtualHost"] ?? "/";
+
+            _logger.LogInformation("🔍 Tentando conectar ao RabbitMQ Publisher com as seguintes credenciais:");
+            _logger.LogInformation("   HostName: {HostName}", hostName);
+            _logger.LogInformation("   Port: {Port}", port);
+            _logger.LogInformation("   UserName: {UserName}", userName);
+            _logger.LogInformation("   Password: {Password}", password);
+            _logger.LogInformation("   VirtualHost: {VirtualHost}", virtualHost);
+
             var factory = new ConnectionFactory()
             {
-                HostName = _configuration["RabbitMQ:Host"] ?? "localhost",
-                Port = _configuration.GetValue<int>("RabbitMQ:Port", 5672),
-                UserName = _configuration["RabbitMQ:UserName"] ?? "guest",
-                Password = _configuration["RabbitMQ:Password"] ?? "guest",
-                VirtualHost = _configuration["RabbitMQ:VirtualHost"] ?? "/",
+                HostName = hostName,
+                Port = port,
+                UserName = userName,
+                Password = password,
+                VirtualHost = virtualHost,
                 AutomaticRecoveryEnabled = true,
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
             };

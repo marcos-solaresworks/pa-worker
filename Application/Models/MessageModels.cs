@@ -65,31 +65,55 @@ public class LoteProcessamentoMessage
 public class LambdaProcessamentoPayload
 {
     public int LoteId { get; set; }
-    public string S3Bucket { get; set; } = string.Empty;
-    public string S3Key { get; set; } = string.Empty;
-    public PerfilProcessamentoDto PerfilProcessamento { get; set; } = new();
-    public string? CallbackUrl { get; set; }
-    public string TipoProcessamento { get; set; } = string.Empty;
-    public string LambdaArn { get; set; } = string.Empty;
-    public Dictionary<string, object> ProcessamentoConfig { get; set; } = new();
+    public Cliente? Cliente { get; set; }
+    public Domain.Entities.PerfilProcessamento? PerfilProcessamento { get; set; }
+    public List<ArquivoPcl>? ArquivosPcl { get; set; }
+    public DateTime DataCriacao { get; set; }
+    public string? TipoProcessamento { get; set; }
+    public string? LambdaArn { get; set; }
+    public Dictionary<string, object>? ProcessamentoConfig { get; set; }
 }
 
-public class PerfilProcessamentoDto
+public class Cliente
 {
     public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
-    public string? TemplatePcl { get; set; }
-    public string? TipoProcessamento { get; set; }
-    public string? LambdaFunction { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
+    public DateTime DataCadastro { get; set; }
+}
+
+public class ArquivoPcl
+{
+    public int Id { get; set; }
+    public int LoteId { get; set; }
+    public string NomeArquivo { get; set; } = string.Empty;
+    public string CaminhoArquivo { get; set; } = string.Empty;
+    public long TamanhoBytes { get; set; }
+    public int NumeroPaginas { get; set; }
+    public DateTime DataUpload { get; set; }
 }
 
 public class LambdaProcessamentoResponse
 {
-    public bool Success { get; set; }
-    public string? ErrorMessage { get; set; }
-    public int RegistrosProcessados { get; set; }
-    public string? OutputPath { get; set; }
+    public int LoteId { get; set; }
+    public string Status { get; set; } = string.Empty;
+    public bool Sucesso { get; set; }
+    public string MensagemRetorno { get; set; } = string.Empty;
+    public DateTime DataProcessamento { get; set; }
+    public DetalhesProcessamento? DetalhesProcessamento { get; set; }
+    public string? TipoProcessamento { get; set; }
     public TimeSpan TempoProcessamento { get; set; }
+    public List<string> ArquivosProcessados { get; set; } = new();
+    public int TotalPaginas { get; set; }
+}
+
+public class DetalhesProcessamento
+{
+    public TimeSpan TempoProcessamento { get; set; }
+    public List<string> ArquivosProcessados { get; set; } = new();
+    public List<string> ArquivosProcessadosS3 { get; set; } = new();
+    public int TotalPaginas { get; set; }
 }
 
 public class LoteProcessamentoRetornoMessage

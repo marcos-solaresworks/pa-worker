@@ -73,43 +73,48 @@ public class ProcessamentoService : IProcessamentoService
             _logger.LogInformation("🚀 [STEP 3] Chamando Lambda Router para lote {LoteId}...", loteId);
             var response = await _lambdaRouter.RouteToLambdaAsync(message, perfil);
 
-            if (response.Success)
+            if (response.Sucesso)
             {
                 // Processamento bem-sucedido
                 _logger.LogInformation("✅ [STEP 4] Processamento concluído com sucesso!");
-                _logger.LogInformation("   📊 Registros processados: {Registros}", response.RegistrosProcessados);
+                _logger.LogInformation("   📊 Arquivos processados: {Arquivos}", response.ArquivosProcessados.Count);
+                _logger.LogInformation("   📄 Total de páginas: {Paginas}", response.TotalPaginas);
                 _logger.LogInformation("   ⏱️ Tempo de processamento: {Tempo:F2}s", response.TempoProcessamento.TotalSeconds);
-                _logger.LogInformation("   📁 Arquivo de saída: {Output}", response.OutputPath ?? "N/A");
                 
-                await AtualizarStatusLoteAsync(lote, "Concluído", 
-                    $"Processados {response.RegistrosProcessados} registros em {response.TempoProcessamento.TotalSeconds:F2}s");
+                var arquivosSaida = response.DetalhesProcessamento?.ArquivosProcessadosS3 ?? new List<string>();
+                foreach (var arquivo in arquivosSaida)
+                {
+                    _logger.LogInformation("   📁 Arquivo de saída: {Output}", arquivo);
+                }
                 
-                await CriarLogProcessamentoAsync(loteId, 
-                    $"Processamento concluído - {response.RegistrosProcessados} registros processados", "Success");
-
-                _logger.LogInformation("💾 Status atualizado para 'Concluído' no banco de dados");
-
+                // Atualizar status do lote para concluído
+                await AtualizarStatusLoteAsync(lote, "Concluído");
+                
+                // Criar log de conclusão
+                await CriarLogProcessamentoAsync(loteId, $"Processamento concluído com sucesso. Arquivos: {response.ArquivosProcessados.Count}, Páginas: {response.TotalPaginas}, Tempo: {response.TempoProcessamento.TotalSeconds:F2}s", "Info");
+                
                 // Publicar mensagem de retorno
+                _logger.LogInformation("💾 Status atualizado para 'Concluído' no banco de dados");
                 _logger.LogInformation("📝 Preparando mensagem de retorno para publicação...");
                 var retornoMessage = new LoteProcessamentoRetornoMessage
                 {
                     LoteId = loteId,
                     Sucesso = true,
                     Status = "Concluído",
-                    RegistrosProcessados = response.RegistrosProcessados,
-                    ArquivoSaida = response.OutputPath,
+                    RegistrosProcessados = response.TotalPaginas,
+                    ArquivoSaida = string.Join(", ", arquivosSaida),
                     TempoProcessamentoSegundos = response.TempoProcessamento.TotalSeconds,
                     DataProcessamento = DateTime.UtcNow
                 };
 
                 _logger.LogInformation("📮 [STEP 5] Publicando mensagem de retorno na fila 'lote.processamento.retorno'...");
-                _logger.LogDebug("Mensagem: LoteId={LoteId}, Status={Status}, Registros={Registros}", 
-                    retornoMessage.LoteId, retornoMessage.Status, retornoMessage.RegistrosProcessados);
+                _logger.LogDebug("Mensagem: LoteId={LoteId}, Status={Status}, Registros={Registros}, Tempo={Tempo}s, ArquivoSaida={Arquivo}", 
+                    retornoMessage.LoteId, retornoMessage.Status, retornoMessage.RegistrosProcessados, retornoMessage.TempoProcessamentoSegundos, retornoMessage.ArquivoSaida);
                 
                 try
                 {
                     await _messagePublisher.PublishAsync(retornoMessage, "lote.processamento.retorno");
-                    _logger.LogInformation("✅ Mensagem de retorno publicada com sucesso!");
+                    _logger.LogInformation("✅ Mensagem de retorno publicada com sucesso na fila 'lote.processamento.retorno'!");
                 }
                 catch (Exception pubEx)
                 {
@@ -120,7 +125,7 @@ public class ProcessamentoService : IProcessamentoService
             else
             {
                 // Erro no processamento
-                var errorMessage = response.ErrorMessage ?? "Erro desconhecido no processamento";
+                var errorMessage = response.MensagemRetorno ?? "Erro desconhecido no processamento";
                 _logger.LogError("❌ Erro no processamento do lote {LoteId}: {Error}", loteId, errorMessage);
                 
                 await AtualizarStatusLoteAsync(lote, "Erro", errorMessage);

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using OrquestradorCentral.Application.Interfaces;
 using OrquestradorCentral.Application.Models;
 using OrquestradorCentral.Domain.Entities;
+using System.IO;
 
 namespace OrquestradorCentral.Application.Services;
 
@@ -11,16 +12,22 @@ public class LambdaRouter : ILambdaRouter
     private readonly ILambdaInvoker _lambdaInvoker;
     private readonly IConfiguration _configuration;
     private readonly ILogger<LambdaRouter> _logger;
+    private readonly IClienteRepository _clienteRepository;
+    private readonly IArquivoPclRepository _arquivoPclRepository;
     private readonly Dictionary<string, string> _lambdaFunctions;
 
     public LambdaRouter(
         ILambdaInvoker lambdaInvoker,
         IConfiguration configuration,
-        ILogger<LambdaRouter> logger)
+        ILogger<LambdaRouter> logger,
+        IClienteRepository clienteRepository,
+        IArquivoPclRepository arquivoPclRepository)
     {
         _lambdaInvoker = lambdaInvoker;
         _configuration = configuration;
         _logger = logger;
+        _clienteRepository = clienteRepository;
+        _arquivoPclRepository = arquivoPclRepository;
         
         // Carregar mapeamento de Lambdas da configuração
         _lambdaFunctions = new Dictionary<string, string>();
@@ -53,23 +60,8 @@ public class LambdaRouter : ILambdaRouter
 
         // Preparar payload específico para a Lambda
         _logger.LogDebug("📦 Preparando payload para a Lambda...");
-        var payload = new LambdaProcessamentoPayload
-        {
-            LoteId = message.LoteId,
-            S3Key = message.S3Key,
-            S3Bucket = message.S3Bucket,
-            PerfilProcessamento = new PerfilProcessamentoDto
-            {
-                Id = perfil.Id,
-                Nome = perfil.Nome,
-                TemplatePcl = perfil.TemplatePcl,
-                TipoProcessamento = perfil.TipoProcessamento,
-                LambdaFunction = perfil.LambdaFunction
-            },
-            CallbackUrl = message.CallbackUrl,
-            TipoProcessamento = tipoProcessamento,
-            LambdaArn = lambdaArn
-        };
+        var payload = await PrepararPayloadCompletoAsync(message, perfil, tipoProcessamento, lambdaArn);
+        _logger.LogInformation("✅ Payload preparado com Cliente e ArquivosPcl incluídos");
 
         // Adicionar metadados específicos baseados no tipo de processamento
         _logger.LogDebug("⚙️ Enriquecendo payload com configurações específicas do tipo {Tipo}...", tipoProcessamento);
@@ -192,6 +184,88 @@ public class LambdaRouter : ILambdaRouter
         _logger.LogDebug("Payload enriquecido para tipo {TipoProcessamento} com {ConfigCount} configurações", 
             tipoProcessamento, payload.ProcessamentoConfig.Count);
 
+        return payload;
+    }
+
+    private async Task<LambdaProcessamentoPayload> PrepararPayloadCompletoAsync(
+        LoteProcessamentoMessage message, 
+        PerfilProcessamento perfil, 
+        string tipoProcessamento, 
+        string lambdaArn)
+    {
+        _logger.LogInformation("🔍 Buscando dados reais do banco de dados para lote {LoteId}...", message.LoteId);
+
+        // 1. Buscar cliente real do banco de dados
+        var clienteEntity = await _clienteRepository.GetByIdAsync(message.ClienteId);
+        if (clienteEntity == null)
+        {
+            throw new InvalidOperationException($"Cliente {message.ClienteId} não encontrado no banco de dados");
+        }
+
+        _logger.LogInformation("✅ Cliente encontrado: {Nome} (ID: {Id})", clienteEntity.Nome, clienteEntity.Id);
+
+        // 2. Buscar arquivos PCL reais do banco de dados
+        var arquivosEntity = await _arquivoPclRepository.GetByLoteIdAsync(message.LoteId);
+        if (arquivosEntity == null || !arquivosEntity.Any())
+        {
+            _logger.LogWarning("⚠️ Nenhum arquivo PCL encontrado para o LoteId: {LoteId}. Usando caminho da mensagem.", message.LoteId);
+            // Se não houver arquivos, usar o caminho da mensagem
+            arquivosEntity = new List<Domain.Entities.ArquivoPcl>
+            {
+                new Domain.Entities.ArquivoPcl
+                {
+                    LoteId = message.LoteId,
+                    NomeArquivo = message.NomeArquivo,
+                    CaminhoArquivo = message.CaminhoS3,
+                    DataUpload = DateTime.UtcNow
+                }
+            };
+        }
+
+        _logger.LogInformation("✅ {Count} arquivo(s) PCL encontrado(s) para processamento", arquivosEntity.Count);
+
+        // 3. Converter entidades do Domain para modelos do Application
+        var clienteModel = new Cliente
+        {
+            Id = clienteEntity.Id,
+            Nome = clienteEntity.Nome,
+            Email = clienteEntity.Email ?? string.Empty,
+            Telefone = clienteEntity.Telefone ?? string.Empty,
+            DataCadastro = clienteEntity.DataCadastro
+        };
+
+        var arquivosModel = arquivosEntity.Select(a => new ArquivoPcl
+        {
+            Id = a.Id,
+            LoteId = a.LoteId,
+            NomeArquivo = a.NomeArquivo,
+            CaminhoArquivo = a.CaminhoArquivo,
+            TamanhoBytes = a.TamanhoBytes,
+            NumeroPaginas = a.NumeroPaginas,
+            DataUpload = a.DataUpload
+        }).ToList();
+
+        foreach (var arquivo in arquivosModel)
+        {
+            _logger.LogInformation("   📄 Arquivo: {Nome} - Caminho S3: {Caminho}", arquivo.NomeArquivo, arquivo.CaminhoArquivo);
+        }
+
+        var payload = new LambdaProcessamentoPayload
+        {
+            LoteId = message.LoteId,
+            Cliente = clienteModel,
+            PerfilProcessamento = perfil,
+            ArquivosPcl = arquivosModel,
+            DataCriacao = DateTime.UtcNow,
+            TipoProcessamento = tipoProcessamento,
+            LambdaArn = lambdaArn,
+            ProcessamentoConfig = new Dictionary<string, object>()
+        };
+
+        // Enriquecer com configurações específicas
+        payload = EnriquecerPayloadPorTipo(payload, tipoProcessamento, perfil);
+        
+        _logger.LogInformation("✅ Payload preparado com dados reais do banco de dados");
         return payload;
     }
 }

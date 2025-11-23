@@ -5,64 +5,46 @@ services:
     build: .
     container_name: orquestrador-central
     environment:
-      # Removido ASPNETCORE_ENVIRONMENT=Development - usa apenas appsettings.json
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=GraficaLtda;Username=postgres;Password=postgres123
-      - RabbitMQ__HostName=rabbitmq
+      # Configuração do Banco de Dados PostgreSQL (ajuste o host se necessário)
+      - ConnectionStrings__DefaultConnection=Host=db-grafica;Database=bpdapi_db;Username=postgres;Password=EasdPG;Port=5432
+      # Configuração do RabbitMQ
+      - RabbitMQ__HostName=172.22.0.3
       - RabbitMQ__Port=5672
       - RabbitMQ__UserName=admin
-      - RabbitMQ__Password=admin123
+      - RabbitMQ__Password=GraficaMVP2025!
       - RabbitMQ__QueueName=lote.processamento
+      - RabbitMQ__QueueRetorno=lote.processamento.retorno
       - RabbitMQ__ExchangeName=graficaltda.exchange
       - RabbitMQ__DeadLetterQueue=lote.processamento.dlq
-      - AWS__AccessKey=your-access-key
-      - AWS__SecretKey=your-secret-key
+      # Configuração da AWS (substitua pelas suas credenciais reais)
+      - AWS__AccessKey=key-aws
+      - AWS__SecretKey=secret-aws
       - AWS__Region=us-east-1
+      # Bucket S3 para arquivos processados
+      - AWS__S3__OutputBucket=grafica-mvp-storage-qb1g7tq6
+      - AWS__S3__OutputPrefix=processados/
       - AWS__Lambda__TimeoutSeconds=300
       - AWS__Lambda__MaxRetries=3
-      # Múltiplas Lambdas - Sistema de Roteamento
-      - AWS__Lambda__Functions__ClienteMalaDireta=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteMalaDireta
-      - AWS__Lambda__Functions__ClienteEtiquetas=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteEtiquetas
-      - AWS__Lambda__Functions__ClienteCartoes=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoClienteCartoes
-      - AWS__Lambda__Functions__Default=arn:aws:lambda:us-east-1:123456789012:function:ProcessamentoPCLGenerico
-    depends_on:
-      - postgres
-      - rabbitmq
+      # ARNs das Lambdas (substitua pelos ARNs reais após deploy)
+      - AWS__Lambda__Functions__ClienteMalaDireta=arn:aws:lambda:us-east-1:444951961850:function:ProcessaMalaDireta
+      - AWS__Lambda__Functions__ClienteEtiquetas=arn:aws:lambda:us-east-1:444951961850:function:ProcessamentoClienteEtiquetas
+      - AWS__Lambda__Functions__ClienteCartoes=arn:aws:lambda:us-east-1:444951961850:function:ProcessamentoClienteCartoes
+      - AWS__Lambda__Functions__Default=arn:aws:lambda:us-east-1:444951961850:function:ProcessamentoPCLGenerico
+      # Ambiente de produção
+      - ASPNETCORE_ENVIRONMENT=Production
+      - TZ=America/Sao_Paulo
     restart: unless-stopped
     networks:
-      - grafica-network
-
-  postgres:
-    image: postgres:15
-    container_name: postgres-db
-    environment:
-      POSTGRES_DB: GraficaLtda
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
-    ports:
-      - "5432:5432"
+      - grafica-net
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - grafica-network
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq-server
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin123
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-      - grafica-network
-
-volumes:
-  postgres_data:
-  rabbitmq_data:
+      - ./logs:/app/logs  # Montar diretório de logs para persistência
+    healthcheck:
+      test: ["CMD", "ps", "aux", "|", "grep", "-v", "grep", "|", "grep", "-q", "dotnet"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 networks:
-  grafica-network:
-    driver: bridge
+  grafica-net:
+    external: true

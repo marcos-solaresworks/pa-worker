@@ -39,51 +39,43 @@ public class LambdaInvoker : ILambdaInvoker
 
         try
         {
-            _logger.LogInformation("🔄 [SIMULAÇÃO] Invocando Lambda {TipoProcessamento} para lote {LoteId} com arquivo {Arquivo} (ARN: {Arn})", 
-                payload.TipoProcessamento, payload.LoteId, payload.S3Key, functionArn);
+            _logger.LogInformation("🔄 Invocando Lambda {TipoProcessamento} para lote {LoteId} com arquivo {Arquivo} (ARN: {Arn})", 
+                payload.TipoProcessamento, payload.LoteId, payload.ArquivosPcl?.FirstOrDefault()?.NomeArquivo ?? "N/A", functionArn);
 
             // ========================================================================
-            // 🚧 SIMULAÇÃO DE PROCESSAMENTO - INVOCAÇÃO REAL DA LAMBDA COMENTADA
+            // ✅ INVOCAÇÃO REAL DA LAMBDA AWS
             // ========================================================================
-            // A invocação real será habilitada quando a Lambda estiver disponível
-            // Para o MVP, simulamos um processamento bem-sucedido
-            // ========================================================================
-
-            /* CÓDIGO REAL DA LAMBDA (COMENTADO TEMPORARIAMENTE)
             
             var jsonPayload = JsonSerializer.Serialize(payload, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
 
-            var context = new Context($"lote-{payload.LoteId}");
-            context["LoteId"] = payload.LoteId.ToString();
+            _logger.LogDebug("📤 Payload JSON da Lambda: {Payload}", jsonPayload);
 
-            var response = await _retryPolicy.ExecuteAsync(async (ctx) =>
+            var request = new InvokeRequest
             {
-                var request = new InvokeRequest
-                {
-                    FunctionName = functionArn,
-                    Payload = jsonPayload,
-                    InvocationType = InvocationType.RequestResponse
-                };
+                FunctionName = functionArn,
+                Payload = jsonPayload,
+                InvocationType = InvocationType.RequestResponse
+            };
 
-                var invokeResponse = await _lambdaClient.InvokeAsync(request);
-                
-                if (invokeResponse.StatusCode != 200)
-                {
-                    throw new AmazonLambdaException($"Lambda invocation failed with status code: {invokeResponse.StatusCode}");
-                }
+            _logger.LogInformation("📡 Invocando Lambda AWS: {Arn}", functionArn);
+            var invokeResponse = await _lambdaClient.InvokeAsync(request);
+            
+            if (invokeResponse.StatusCode != 200)
+            {
+                throw new Amazon.Lambda.Model.AmazonLambdaException($"Lambda invocation failed with status code: {invokeResponse.StatusCode}");
+            }
 
-                return invokeResponse;
-            }, context);
+            _logger.LogInformation("✅ Lambda invocada com sucesso - Status: {Status}", invokeResponse.StatusCode);
 
             // Processar resposta
-            var responsePayload = response.Payload;
+            var responsePayload = invokeResponse.Payload;
             using var reader = new StreamReader(responsePayload);
             var responseJson = await reader.ReadToEndAsync();
 
-            _logger.LogDebug("Resposta da Lambda para lote {LoteId}: {Response}", payload.LoteId, responseJson);
+            _logger.LogDebug("📥 Resposta da Lambda para lote {LoteId}: {Response}", payload.LoteId, responseJson);
 
             var lambdaResponse = JsonSerializer.Deserialize<LambdaProcessamentoResponse>(responseJson, new JsonSerializerOptions
             {
@@ -92,41 +84,22 @@ public class LambdaInvoker : ILambdaInvoker
 
             if (lambdaResponse == null)
             {
+                _logger.LogError("❌ Resposta da Lambda inválida ou nula");
                 return new LambdaProcessamentoResponse
                 {
-                    Success = false,
-                    ErrorMessage = "Resposta inválida da Lambda"
+                    LoteId = payload.LoteId,
+                    Sucesso = false,
+                    Status = "Erro",
+                    MensagemRetorno = "Resposta inválida da Lambda",
+                    DataProcessamento = DateTime.UtcNow,
+                    TempoProcessamento = TimeSpan.Zero,
+                    ArquivosProcessados = new List<string>(),
+                    TotalPaginas = 0
                 };
             }
 
-            */
-
-            // ========================================================================
-            // ✅ SIMULAÇÃO: RETORNO DE SUCESSO
-            // ========================================================================
-
-            // Simular tempo de processamento realista
-            var inicioProcessamento = DateTime.UtcNow;
-            await Task.Delay(TimeSpan.FromSeconds(2)); // Simula 2 segundos de processamento
-            var tempoProcessamento = DateTime.UtcNow - inicioProcessamento;
-
-            // Simular número de registros processados baseado no nome do arquivo
-            var registrosSimulados = Random.Shared.Next(50, 500);
-
-            // Construir caminho de saída simulado no S3
-            var outputPath = $"s3://{payload.S3Bucket}/processados/{payload.LoteId}/output_{DateTime.UtcNow:yyyyMMddHHmmss}.pcl";
-
-            var lambdaResponse = new LambdaProcessamentoResponse
-            {
-                Success = true,
-                RegistrosProcessados = registrosSimulados,
-                OutputPath = outputPath,
-                TempoProcessamento = tempoProcessamento,
-                ErrorMessage = null
-            };
-
-            _logger.LogInformation("✅ [SIMULAÇÃO] Lambda processou lote {LoteId} com sucesso. Registros: {Registros}, Tempo: {Tempo}ms, Output: {Output}", 
-                payload.LoteId, lambdaResponse.RegistrosProcessados, lambdaResponse.TempoProcessamento.TotalMilliseconds, outputPath);
+            _logger.LogInformation("✅ Resposta da Lambda processada: Sucesso={Sucesso}, Arquivos={Arquivos}, Páginas={Paginas}", 
+                lambdaResponse.Sucesso, lambdaResponse.ArquivosProcessados.Count, lambdaResponse.TotalPaginas);
 
             return lambdaResponse;
         }
@@ -136,8 +109,14 @@ public class LambdaInvoker : ILambdaInvoker
             
             return new LambdaProcessamentoResponse
             {
-                Success = false,
-                ErrorMessage = ex.Message
+                LoteId = payload.LoteId,
+                Sucesso = false,
+                Status = "Erro",
+                MensagemRetorno = ex.Message,
+                DataProcessamento = DateTime.UtcNow,
+                TempoProcessamento = TimeSpan.Zero,
+                ArquivosProcessados = new List<string>(),
+                TotalPaginas = 0
             };
         }
     }

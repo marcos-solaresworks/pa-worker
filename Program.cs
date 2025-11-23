@@ -52,6 +52,8 @@ try
     builder.Services.AddScoped<ILoteRepository, LoteRepository>();
     builder.Services.AddScoped<IPerfilProcessamentoRepository, PerfilProcessamentoRepository>();
     builder.Services.AddScoped<IProcessamentoLogRepository, ProcessamentoLogRepository>();
+    builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+    builder.Services.AddScoped<IArquivoPclRepository, ArquivoPclRepository>();
     
     builder.Services.AddScoped<IProcessamentoService, ProcessamentoService>();
     builder.Services.AddScoped<ILambdaInvoker, LambdaInvoker>();

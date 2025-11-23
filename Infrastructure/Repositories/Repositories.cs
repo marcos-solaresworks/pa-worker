@@ -76,3 +76,35 @@ public class ProcessamentoLogRepository : IProcessamentoLogRepository
         await _context.SaveChangesAsync();
     }
 }
+
+public class ClienteRepository : IClienteRepository
+{
+    private readonly OrquestradorDbContext _context;
+
+    public ClienteRepository(OrquestradorDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Cliente?> GetByIdAsync(int id)
+    {
+        return await _context.Clientes.FirstOrDefaultAsync(c => c.Id == id);
+    }
+}
+
+public class ArquivoPclRepository : IArquivoPclRepository
+{
+    private readonly OrquestradorDbContext _context;
+
+    public ArquivoPclRepository(OrquestradorDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<ArquivoPcl>> GetByLoteIdAsync(int loteId)
+    {
+        return await _context.ArquivosPcl
+            .Where(a => a.LoteId == loteId)
+            .ToListAsync();
+    }
+}
