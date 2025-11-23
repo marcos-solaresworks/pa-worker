@@ -235,7 +235,7 @@ public class LambdaRouter : ILambdaRouter
             Nome = clienteEntity.Nome,
             Email = clienteEntity.Email ?? string.Empty,
             Telefone = clienteEntity.Telefone ?? string.Empty,
-            DataCadastro = clienteEntity.DataCadastro
+            DataCadastro = clienteEntity.DataCriacao
         };
 
         var arquivosModel = arquivosEntity.Select(a => new ArquivoPclModel

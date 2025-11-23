@@ -71,7 +71,6 @@ public class OrquestradorDbContext : DbContext
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.Telefone).HasColumnName("telefone");
             entity.Property(e => e.DataCriacao).HasColumnName("data_criacao");
-            entity.Property(e => e.DataCadastro).HasColumnName("data_cadastro");
         });
 
         modelBuilder.Entity<ArquivoPcl>(entity =>

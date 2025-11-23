@@ -102,8 +102,6 @@ public class Cliente
     public string? Telefone { get; set; }
     
     public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
-    
-    public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
 }
 
 public class ArquivoPcl
