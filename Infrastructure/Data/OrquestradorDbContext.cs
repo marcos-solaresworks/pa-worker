@@ -33,6 +33,7 @@ public class OrquestradorDbContext : DbContext
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.DataCriacao).HasColumnName("data_criacao");
             entity.Property(e => e.DataProcessamento).HasColumnName("data_processamento");
+            entity.Property(e => e.CaminhoProcessadoS3).HasColumnName("carminho_processado_s3");
         });
 
         modelBuilder.Entity<ProcessamentoLog>(entity =>

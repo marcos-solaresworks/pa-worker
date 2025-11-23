@@ -31,6 +31,9 @@ public class LoteProcessamento
     public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
     
     public DateTime? DataProcessamento { get; set; }
+    
+    [MaxLength(500)]
+    public string? CaminhoProcessadoS3 { get; set; }
 }
 
 public class ProcessamentoLog

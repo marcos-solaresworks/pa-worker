@@ -87,8 +87,9 @@ public class ProcessamentoService : IProcessamentoService
                     _logger.LogInformation("   📁 Arquivo de saída: {Output}", arquivo);
                 }
                 
-                // Atualizar status do lote para concluído
-                await AtualizarStatusLoteAsync(lote, "Concluído");
+                // Atualizar status do lote para concluído e salvar caminho do arquivo processado
+                var caminhoProcessado = arquivosSaida.FirstOrDefault();
+                await AtualizarStatusLoteAsync(lote, "Concluído", caminhoProcessado);
                 
                 // Criar log de conclusão
                 await CriarLogProcessamentoAsync(loteId, $"Processamento concluído com sucesso. Arquivos: {response.ArquivosProcessados.Count}, Páginas: {response.TotalPaginas}, Tempo: {response.TempoProcessamento.TotalSeconds:F2}s", "Info");
@@ -202,12 +203,16 @@ public class ProcessamentoService : IProcessamentoService
         }
     }
 
-    private async Task AtualizarStatusLoteAsync(LoteProcessamento lote, string status, string? observacoes = null)
+    private async Task AtualizarStatusLoteAsync(LoteProcessamento lote, string status, string? caminhoProcessadoS3 = null)
     {
         lote.Status = status;
         lote.DataProcessamento = DateTime.UtcNow;
         
-        // Observações não existem na entidade - usando logs para isso
+        if (!string.IsNullOrEmpty(caminhoProcessadoS3))
+        {
+            lote.CaminhoProcessadoS3 = caminhoProcessadoS3;
+            _logger.LogInformation("💾 Salvando caminho do arquivo processado: {Caminho}", caminhoProcessadoS3);
+        }
 
         await _loteRepository.UpdateAsync(lote);
     }
